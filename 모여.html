@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Secret Invitation</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background-color: #f0fff0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* 카드 디자인 */
+  #card {
+    width: 500px;
+    height: 300px;
+    background-color: #b7e4c7;
+    border-radius: 0;
+    text-align: center;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    color: #064635;
+    position: relative;
+    z-index: 10;
+    transform-origin: top;
+    animation: foldOpen 1s ease forwards;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><circle cx="30" cy="30" r="15" fill="pink" fill-opacity="0.3"/></svg>');
+    background-repeat: repeat;
+  }
+
+  @keyframes foldOpen {
+    0% { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
+  }
+
+  /* 이미지 등장 */
+  #secret-img {
+    display: none;
+    width: 500px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: -400px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: bottom 2.5s ease;
+    z-index: 5;
+  }
+
+  /* 꽃 전체 */
+  .flower {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-image: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">\
+<g fill="pink">\
+<path d="M32 0 C37 0 42 10 42 14 C42 18 37 24 32 32 C27 24 22 18 22 14 C22 10 27 0 32 0 Z"/>\
+<path d="M32 0 C37 0 42 10 42 14 C42 18 37 24 32 32 C27 24 22 18 22 14 C22 10 27 0 32 0 Z" transform="rotate(72 32 32)"/>\
+<path d="M32 0 C37 0 42 10 42 14 C42 18 37 24 32 32 C27 24 22 18 22 14 C22 10 27 0 32 0 Z" transform="rotate(144 32 32)"/>\
+<path d="M32 0 C37 0 42 10 42 14 C42 18 37 24 32 32 C27 24 22 18 22 14 C22 10 27 0 32 0 Z" transform="rotate(216 32 32)"/>\
+<path d="M32 0 C37 0 42 10 42 14 C42 18 37 24 32 32 C27 24 22 18 22 14 C22 10 27 0 32 0 Z" transform="rotate(288 32 32)"/>\
+</g></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      top: -150px;
+      opacity: 1;
+      transform: translateX(0) rotate(0deg);
+    }
+    100% {
+      top: 110vh;
+      opacity: 0.7;
+      transform: translateX(50px) rotate(360deg);
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="card">
+  Welcome
+  <img id="secret-img" src="https://i.ibb.co/xSpYD533/aaa.png" alt="초대장 이미지">
+</div>
+
+<script>
+  const card = document.getElementById('card');
+  const secretImg = document.getElementById('secret-img');
+  let unlocked = false;
+
+  card.addEventListener('click', () => {
+    if (unlocked) return;
+    const password = prompt("암호를 입력하세요:");
+    if(password === "520"){
+      unlocked = true;
+      secretImg.style.display = 'block';
+      setTimeout(() => {
+        const windowHeight = window.innerHeight;
+        const imgHeight = secretImg.offsetHeight;
+        // 화면 중앙보다 아래 위치 (중앙보다 150px 내려)
+        secretImg.style.bottom = (windowHeight/2 - imgHeight/2 - 170) + 'px';
+      }, 50);
+    } else if(password !== null) {
+      alert("암호가 틀렸습니다 😢");
+    }
+  });
+
+  function createFlowers() {
+    const total = 25;
+    for(let i=0; i<total; i++){
+      const flower = document.createElement('div');
+      flower.classList.add('flower');
+      flower.style.left = Math.random() * 100 + 'vw';
+      flower.style.animationDuration = 5 + Math.random()*5 + 's';
+      flower.style.animationDelay = Math.random()*5 + 's';
+      document.body.appendChild(flower);
+    }
+  }
+
+  createFlowers();
+</script>
+
+</body>
+</html>
